@@ -49,6 +49,8 @@
 		6762B719152D9EBC001B2274 /* configure */ = {isa = PBXFileReference; lastKnownFileType = text; path = configure; sourceTree = "<group>"; };
 		6762B71A152D9EE0001B2274 /* Makefile.in */ = {isa = PBXFileReference; explicitFileType = text.script.csh; path = Makefile.in; sourceTree = "<group>"; };
 		6762B71F152DBA8F001B2274 /* MVector-config.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = "MVector-config.in"; sourceTree = "<group>"; };
+		6762B730152DE0DF001B2274 /* MVector_C_API.pages */ = {isa = PBXFileReference; lastKnownFileType = file; path = MVector_C_API.pages; sourceTree = "<group>"; };
+		6762B731152DE0DF001B2274 /* MVector_C_API.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = MVector_C_API.pdf; sourceTree = "<group>"; };
 		677DC76A152B43DB00BF52B0 /* cVectorTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cVectorTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		677DC76D152B43DB00BF52B0 /* cVectorTests.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cVectorTests.c; sourceTree = "<group>"; };
 		677DC76F152B43DB00BF52B0 /* cVectorTests.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = cVectorTests.1; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				6762B715152D7CE0001B2274 /* libstdc++.dylib */,
+				6762B72F152DCEAB001B2274 /* Documents */,
 				67428987152AD9EB0051F8CA /* Source */,
 				677DC76C152B43DB00BF52B0 /* cVectorTests */,
 				6742897E152AD9B00051F8CA /* Products */,
@@ -106,6 +109,15 @@
 				677DC77A152C3CB400BF52B0 /* MVector_cApi.cpp */,
 			);
 			name = Source;
+			sourceTree = "<group>";
+		};
+		6762B72F152DCEAB001B2274 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				6762B730152DE0DF001B2274 /* MVector_C_API.pages */,
+				6762B731152DE0DF001B2274 /* MVector_C_API.pdf */,
+			);
+			path = Documents;
 			sourceTree = "<group>";
 		};
 		677DC76C152B43DB00BF52B0 /* cVectorTests */ = {
