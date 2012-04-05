@@ -64,7 +64,6 @@
  *
  ***************************************************************************/
 
-
 #ifndef _MVECTOR_H_
 #define _MVECTOR_H_
 #include "MVector_version.h"

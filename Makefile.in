@@ -1,0 +1,67 @@
+#***************************************************************************
+#*
+#* Copyright Dstl 2011
+#*
+#* Module: Makefile.template
+#*
+#* Original Author: Matt Nottingham
+#*
+#* Description: Makefile for the image library library
+#*
+#***************************************************************************
+
+CC = g++
+
+SRC = MVector.cpp MVector_cApi.cpp
+
+INCLUDE = MVector.h MVector_version.h
+
+CFLAGS = -O2 -Wall -c -m64
+
+OBJ = $(patsubst %.cpp, %.o, $(SRC))
+
+VERSION = CONFIGVERSION
+CFLAGS+=-DVERSION="\"$(VERSION)\""
+
+uname :=  $(shell uname)
+installedversion := $(shell INSTALL_DIR/bin/MVector-config --version)
+
+lib:	libMVector.a
+
+libMVector.a:	$(OBJ) $(INCLUDE)
+		@echo Making library libMVector.a
+		ar -r libMVector.a $(OBJ) 
+
+install:	libMVector.a
+ifeq ($(installedversion), $(VERSION))
+	@echo "*** "
+	@echo "*** ERROR: This version is already installed." 
+	@echo "***  Have you updated MVector_version.h?"
+	@echo "*** "
+endif
+		mkdir -p INSTALL_DIR/lib
+		cp -i libMVector.a INSTALL_DIR/lib/libMVector-$(VERSION).a
+		rm -f INSTALL_DIR/lib/libMVector.a
+		ln -s INSTALL_DIR/lib/libMVector-$(VERSION).a INSTALL_DIR/lib/libMVector.a
+
+		mkdir -p INSTALL_DIR/include/MVector-$(VERSION)
+		cp -i $(INCLUDE) INSTALL_DIR/include/MVector-$(VERSION)
+		rm -f INSTALL_DIR/include/MVector
+		ln -s INSTALL_DIR/include/MVector-$(VERSION) INSTALL_DIR/include/MVector
+		rm -f MVector-config
+		@echo >MVector-config "#!/bin/sh"
+		@echo >>MVector-config "CONFIG_LIBS=\"-LINSTALL_DIR/lib -lMVector -lstdc++ \""
+		@echo >>MVector-config "CONFIG_CFLAGS=\"-IINSTALL_DIR/include/MVector \""
+		@echo >>MVector-config "CONFIG_VERSION=\"$(VERSION)\""
+		@echo >>MVector-config "CONFIG_PREFIX=\"INSTALL_DIR\""
+		cat >>MVector-config MVector-config.in
+		cp  -i MVector-config INSTALL_DIR/bin
+		chmod +x INSTALL_DIR/bin/MVector-config
+
+%.o:	%.cpp $(INCLUDE)
+	$(CC) $< $(CFLAGS) -o $@ 
+
+clean:	
+	rm -f *.o libMVector.a
+
+

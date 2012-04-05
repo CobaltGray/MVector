@@ -1,0 +1,86 @@
+#!/bin/csh -f
+#***************************************************************************
+#*
+#* Copyright Dstl
+#*
+#* Module: Configure
+#*
+#* Original Author: Darren Muff
+#*
+#* Description: Configuration script for MVector Library
+#*
+#***************************************************************************
+
+# The file asks for specific variables and then 
+# inserts them into the code using sed.
+
+set CURR_DIR = $PWD
+
+# First need to check that required binaries are in the users path
+# Required binaries are :
+#	g++
+
+echo "Searching for files required for this installation..."
+foreach req (g++)
+	which $req
+	if ($status) then
+		echo "Error: required binary $req not found"
+		exit 1
+	endif
+end
+
+# Inputs required are :
+#	INSTALL_DIR: The directory in which the application is going to be installed
+
+set def_INSTALL_DIR = $HOME
+
+# Determine which version this library is
+
+set VERSION = `grep "define MVECTOR_RELEASE_NAME" MVector_version.h | awk -F\" '{print $2}'`
+
+#
+# Ask for parameters for installation directory
+#
+
+echo " "
+echo "Please enter the full path name of the directory"
+echo "that MVector is to be installed into. Executable files"
+echo "will be placed in a bin subdirectory, libraries will"
+echo "be put in a lib subdirectory and includes into "
+echo "include. [$def_INSTALL_DIR]"
+echo " "
+
+set INSTALL_DIR = $<
+if ($INSTALL_DIR == "") then
+	set INSTALL_DIR = $def_INSTALL_DIR
+endif
+
+echo "Setting install_dir to be $INSTALL_DIR"
+if ( ! (-d $INSTALL_DIR/bin && -d $INSTALL_DIR/include && -d $INSTALL_DIR && -d $INSTALL_DIR/lib) ) then
+	echo " "
+	echo "$INSTALL_DIR, $INSTALL_DIR/bin or $INSTALL_DIR/include or $INSTALL_DIR/lib does not exist. Shall I create it? [y/n]"
+	set yesno = $<
+	if ( $yesno == "y" || $yesno == "Y" || $yesno == "yes" || $yesno == "Yes" || $yesno == "YES") then
+		mkdir -p $INSTALL_DIR
+		mkdir -p $INSTALL_DIR/bin
+		mkdir -p $INSTALL_DIR/include
+		mkdir -p $INSTALL_DIR/lib
+		if ( ! -d $INSTALL_DIR ) then
+			echo "Error : Failed to create install directory $INSTALL_DIR"
+			exit 1
+		endif
+	else
+		echo "Exiting ... "
+		exit 1
+	endif
+endif
+
+sed s@INSTALL_DIR@${INSTALL_DIR}@g Makefile.in > Makefile.tmp
+sed s@CONFIGVERSION@${VERSION}@g Makefile.tmp > Makefile
+rm -fr Makefile.tmp
+
+echo "Configuration is complete."
+echo " Now type 'make; make install' "
+echo " "
+echo " "
+
