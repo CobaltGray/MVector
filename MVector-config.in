@@ -1,0 +1,40 @@
+
+usage()
+{
+        cat <<EOF
+Usage: MVector-config [OPTIONS]
+Options:
+        [--libs]
+        [--cflags]
+        [--version]
+        [--prefix]
+EOF
+        exit $1
+}
+
+if test $# -eq 0; then
+        usage 1 1>&2
+fi
+
+case $1 in 
+  --libs)
+    echo $CONFIG_LIBS
+    ;;
+
+  --cflags)
+    echo $CONFIG_CFLAGS
+    ;;
+
+  --version)
+    echo $CONFIG_VERSION
+    ;;
+
+  --prefix)
+    echo $CONFIG_PREFIX
+    ;;
+
+  *)
+    usage 1 1>&2
+    ;;
+
+esac
