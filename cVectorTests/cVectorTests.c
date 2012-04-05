@@ -15,6 +15,7 @@
 int main (int argc, const char * argv[])
 {
     printf("Hello, World!\n");
+    printf("\n    MVector Version %d Test Harness\n\n",MVECTOR_VERSION_NUM);
     
     VectorH a;
     VectorH b;

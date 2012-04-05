@@ -64,4 +64,11 @@ endif
 clean:	
 	rm -f *.o libMVector.a
 
+test:
+	@echo "Building Test Harness...."
+	gcc -Wall -m64 cVectorTests/cVectorTests.c `INSTALL_DIR/bin/MVector-config --cflags` `INSTALL_DIR/bin/MVector-config --libs` -o cVectorTests/cVectorTests
+	@echo "Running Test Harness..."
+	cVectorTests/cVectorTests
+
+
 
