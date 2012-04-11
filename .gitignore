@@ -1,0 +1,8 @@
+# Ignore objects and achives
+*.[oa]
+#Ignore specific files
+MVector-config
+cVectorTests
+Makefile
+MVector.xcodeproj
+
