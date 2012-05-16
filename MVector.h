@@ -13,14 +13,14 @@
  *
  *		Functions in this class:
  * 			Vector minus()              : Vector negation.
- * 			double mag()                : Magnitude of vector.
+ * 			real mag()                : Magnitude of vector.
  * 			Vector norm()               : Normalise vector.
- * 			double dot(vector)          : Dot product. 
+ * 			real dot(vector)          : Dot product. 
  * 			Vector cross(Vector)        : Cross Product.
- * 			Vector rotatex(double angle): rotate around x axis by theta.
- * 			Vector rotatey(double angle): rotate around y axis by theta.
- * 			Vector rotatez(double angle): rotate around z axis by theta.
- *			Vector rotateAxis(Vector axis, double angle): rotate one vector
+ * 			Vector rotatex(real angle): rotate around x axis by theta.
+ * 			Vector rotatey(real angle): rotate around y axis by theta.
+ * 			Vector rotatez(real angle): rotate around z axis by theta.
+ *			Vector rotateAxis(Vector axis, real angle): rotate one vector
  *			around another by angle
  * 			string toString()           : Convert to string
  * 		Overloaded operators
@@ -67,6 +67,9 @@
 #ifndef _MVECTOR_H_
 #define _MVECTOR_H_
 #include "MVector_version.h"
+#ifndef real
+#define real double
+#endif
 
 #ifndef MTLIB_H__
 // Inherited inline macros from MTLIB
@@ -77,13 +80,13 @@
 #define VECT_MOD(a) (sqrt (a.x*a.x + a.y*a.y + a.z*a.z)) 
 #define VECT_DOT(a,b) (a.x*b.x + a.y*b.y + a.z*b.z)
 #define VECT_CROSS(a,b,out) {out.x = a.y*b.z - a.z*b.y; out.y = a.z*b.x - a.x*b.z; out.z = a.x*b.y - a.y*b.x}
-#define VECT_UNIT(a,out) {double vect_unit_tmp = VECT_MOD(a); out.x = a.x/vect_unit_tmp; out.y = a.y/vect_unit_tmp; out.z = a.z/vect_unit_tmp;}
-#define VECT_PROJ(vect, norm, out) {SPVector tmp; double dot = VECT_DOT(vect, norm); tmp.x = vect.x - dot*norm.x; tmp.y = vect.y - dot*norm.y; tmp.z = vect.z - dot*norm.z; VECT_UNIT(tmp, out);}  
+#define VECT_UNIT(a,out) {real vect_unit_tmp = VECT_MOD(a); out.x = a.x/vect_unit_tmp; out.y = a.y/vect_unit_tmp; out.z = a.z/vect_unit_tmp;}
+#define VECT_PROJ(vect, norm, out) {SPVector tmp; real dot = VECT_DOT(vect, norm); tmp.x = vect.x - dot*norm.x; tmp.y = vect.y - dot*norm.y; tmp.z = vect.z - dot*norm.z; VECT_UNIT(tmp, out);}  
 // Deprecated SPVector used in MTLib. Use VectorH as a the C stub.
 typedef struct {           
-    double x;
-    double y;
-    double z;
+    real x;
+    real y;
+    real z;
 } SPVector;
 #endif
 
@@ -96,24 +99,24 @@ typedef SPVector VectorH;
 #ifdef __cplusplus
 extern "C" {
 #endif
-    VectorH vectCreate(double a, double b, double c);
+    VectorH vectCreate(real a, real b, real c);
     int vectEquals(VectorH v1, VectorH v2);
     int vectNotEqual(VectorH v1, VectorH v2);
     VectorH vectAdd(VectorH v1, VectorH v2);
-    VectorH vectAddScaler(VectorH v1, double scaler);
+    VectorH vectAddScaler(VectorH v1, real scaler);
     VectorH vectSub(VectorH v1, VectorH v2);
-    VectorH vectSubScaler(VectorH v1, double scaler);
-    VectorH vectMult(VectorH v1, double scaler);
-    VectorH vectDiv(VectorH v1, double scaler);
+    VectorH vectSubScaler(VectorH v1, real scaler);
+    VectorH vectMult(VectorH v1, real scaler);
+    VectorH vectDiv(VectorH v1, real scaler);
     VectorH vectMinus(VectorH v);
-    double vectMag(VectorH v);
+    real vectMag(VectorH v);
     VectorH vectNorm(VectorH v);
-    double vectDot(VectorH v1, VectorH v2);
+    real vectDot(VectorH v1, VectorH v2);
     VectorH vectCross(VectorH v1, VectorH v2);
-    VectorH vectRotatex(VectorH v, double angle);
-    VectorH vectRotatey(VectorH v, double angle);
-    VectorH vectRotatez(VectorH v, double angle);
-    VectorH vectRotateAxis(VectorH v, VectorH axis, double angle);
+    VectorH vectRotatex(VectorH v, real angle);
+    VectorH vectRotatey(VectorH v, real angle);
+    VectorH vectRotatez(VectorH v, real angle);
+    VectorH vectRotateAxis(VectorH v, VectorH axis, real angle);
 #ifdef __cplusplus
 }
 #endif
@@ -132,42 +135,46 @@ namespace MVector {
 		
 	public: 
 		
-		double x;
-		double y;
-		double z;
+        union
+        {
+            struct { real x, y, z; };
+            struct { real r, g, b; };
+            struct { real cell[3]; };
+            struct { real R, theta, phi; };
+        };
 		
 		// Constructors first
 		Vector();
-		Vector(double a, double b, double c);
+		Vector(real a, real b, real c);
         Vector(VectorH);
 		
 		// Now overload scalar operators
 		Vector operator+(const Vector &v) const;
-		Vector operator+(double val) const;
+		Vector operator+(real val) const;
 		Vector operator-(const Vector &v) const;
-		Vector operator-( double val) const;
+		Vector operator-( real val) const;
 		Vector operator-() const;
-		Vector operator*(double val) const;
-		Vector operator/(double val) const;
+		Vector operator*(real val) const;
+		Vector operator/(real val) const;
 		bool operator!=(const Vector &v) const;
 		bool operator==(const Vector &v) const;
 		Vector operator^(const Vector &v) const;
 		
 		// friends
-		friend Vector operator*(const double val, const Vector &v);
+		friend Vector operator*(const real val, const Vector &v);
 		friend std::ostream & operator <<(std::ostream &os, const Vector &v);
 		
 		// Now class functions
 		Vector minus() const;
-		double mag() const;
+		real mag() const;
 		Vector norm() const;
-		double dot(const Vector &v) const;
+		real dot(const Vector &v) const;
 		Vector cross(const Vector &v) const;
-		Vector rotatex(double angle) const;
-		Vector rotatey(double angle) const;
-		Vector rotatez(double angle) const;
+		Vector rotatex(real angle) const;
+		Vector rotatey(real angle) const;
+		Vector rotatez(real angle) const;
         std::string toString();
-		Vector rotateAxis(Vector axis, double angle);
+		Vector rotateAxis(Vector axis, real angle);
         VectorH cstub();
 		
     };

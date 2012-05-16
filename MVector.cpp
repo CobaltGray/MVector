@@ -13,14 +13,14 @@
  *
  *		Functions in this class:
  * 			Vector minus()              : Vector negation.
- * 			double mag()                : Magnitude of vector.
+ * 			real mag()                : Magnitude of vector.
  * 			Vector norm()               : Normalise vector.
- * 			double dot(vector)          : Dot product. 
+ * 			real dot(vector)          : Dot product. 
  * 			Vector cross(Vector)        : Cross Product.
- * 			Vector rotatex(double angle): rotate around x axis by theta.
- * 			Vector rotatey(double angle): rotate around y axis by theta.
- * 			Vector rotatez(double angle): rotate around z axis by theta.
- *			Vector rotateAxis(Vector axis, double angle): rotate one vector
+ * 			Vector rotatex(real angle): rotate around x axis by theta.
+ * 			Vector rotatey(real angle): rotate around y axis by theta.
+ * 			Vector rotatez(real angle): rotate around z axis by theta.
+ *			Vector rotateAxis(Vector axis, real angle): rotate one vector
  *			around another by angle
  * 			string toString()           : Convert to string
  * 		Overloaded operators
@@ -71,7 +71,7 @@ namespace MVector {
 	
 	// Constructors
 	Vector::Vector(){ x=y=z=0;}
-	Vector::Vector(double a,double b,double c){x=a; y=b; z=c;}
+	Vector::Vector(real a,real b,real c){x=a; y=b; z=c;}
     Vector::Vector(VectorH v) : x(v.x), y(v.y), z(v.z){}
 	
 	// Overload operators here	
@@ -80,7 +80,7 @@ namespace MVector {
 		return(ans);
 	}
 	
-	Vector Vector::operator+(double val) const {
+	Vector Vector::operator+(real val) const {
 		Vector ans(x+val, y+val, z+val);
 		return(ans);
 	}
@@ -90,7 +90,7 @@ namespace MVector {
 		return (ans);
 	}
 	
-	Vector Vector::operator-(double val) const{
+	Vector Vector::operator-(real val) const{
 		Vector ans(x-val, y-val, z-val);
 		return (ans);
 	}
@@ -99,12 +99,12 @@ namespace MVector {
 		return Vector(-x,-y,-z);
 	}
 	
-	Vector Vector::operator*(double val) const {
+	Vector Vector::operator*(real val) const {
 		Vector ans(x*val,y*val,z*val);
 		return (ans);
 	}
 	
-	Vector Vector::operator/(double val) const {
+	Vector Vector::operator/(real val) const {
 		Vector ans(x/val,y/val,z/val);
 		return(ans);
 	}
@@ -138,15 +138,15 @@ namespace MVector {
 	// Class functions here
 	Vector Vector::minus() const { return (Vector(-x,-y,-z));}
 	
-	double Vector::mag() const {return(sqrt((x*x)+(y*y)+(z*z)));}
+	real Vector::mag() const {return(sqrt((x*x)+(y*y)+(z*z)));}
 	
 	Vector Vector::norm() const {
-		double m = mag();
+		real m = mag();
 		Vector ans(x/m,y/m,z/m);
 		return (ans);
 	}
 	
-	double Vector::dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
+	real Vector::dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
 	
 	Vector Vector::cross(const Vector &v) const {
 		Vector ans(y*v.z - z*v.y,z*v.x - x*v.z,x*v.y - y*v.x);
@@ -155,23 +155,23 @@ namespace MVector {
 	
 	// Rotate around x axis by angle 'angle' 
 	// angle is specified in radians
-	Vector Vector::rotatex(double angle) const {
-		double c = cos(angle);
-		double s = sin(angle);
+	Vector Vector::rotatex(real angle) const {
+		real c = cos(angle);
+		real s = sin(angle);
 		Vector rotated(x,y*c - z*s, s*y + c*z);
 		return (rotated);
 	}
 	
-	Vector Vector::rotatey(double angle) const {
-		double c = cos(angle);
-		double s = sin(angle);
+	Vector Vector::rotatey(real angle) const {
+		real c = cos(angle);
+		real s = sin(angle);
 		Vector rotated(c*x+s*z, y, c*z - x*s);
 		return(rotated);
 	}
 	
-	Vector Vector::rotatez(double angle) const {
-		double c = cos(angle);
-		double s = sin(angle);
+	Vector Vector::rotatez(real angle) const {
+		real c = cos(angle);
+		real s = sin(angle);
 		Vector rotated(c*x-s*y, s*x+c*y, z);
 		return(rotated);
 	}
@@ -179,7 +179,7 @@ namespace MVector {
 	/* Rotate this mvector about the vector axis by an amount theta */
 	/* the rotation Axis is assumed to be a direction from the origin */
 	/* ie this vector has already been translated */
-	Vector Vector::rotateAxis(Vector axis, double theta){
+	Vector Vector::rotateAxis(Vector axis, real theta){
 		Vector ans;
 		if(axis.x == 0 && axis.y == 0 ){
 			ans = rotatez(theta);
@@ -188,8 +188,8 @@ namespace MVector {
 		}else if(axis.y == 0 && axis.z == 0){
 			ans = rotatex(theta);
 		}else{
-			double thetaz = atan(axis.y/axis.x);
-			double thetay = atan( sqrt( (axis.x * axis.x) + (axis.y * axis.y)) / axis.z );
+			real thetaz = atan(axis.y/axis.x);
+			real thetay = atan( sqrt( (axis.x * axis.x) + (axis.y * axis.y)) / axis.z );
 
 			// First rotate around the z axis
 			ans = rotatez(-thetaz);
@@ -226,8 +226,8 @@ namespace MVector {
 	
 	// Friend methods
 	
-	// multiply double val by vector v
-	Vector operator*(double val, const Vector &v){
+	// multiply real val by vector v
+	Vector operator*(real val, const Vector &v){
 		return (v*val);
 	}
 	
