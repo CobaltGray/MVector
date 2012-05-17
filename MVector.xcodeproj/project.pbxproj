@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6742898A152ADA140051F8CA /* MVector.h in Headers */ = {isa = PBXBuildFile; fileRef = 67428988152ADA140051F8CA /* MVector.h */; };
-		6742898B152ADA140051F8CA /* MVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 67428989152ADA140051F8CA /* MVector.cpp */; };
 		6762B716152D7CE0001B2274 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6762B715152D7CE0001B2274 /* libstdc++.dylib */; };
 		6762B718152D99AA001B2274 /* MVector_version.h in Headers */ = {isa = PBXBuildFile; fileRef = 6762B717152D99AA001B2274 /* MVector_version.h */; };
 		677DC76E152B43DB00BF52B0 /* cVectorTests.c in Sources */ = {isa = PBXBuildFile; fileRef = 677DC76D152B43DB00BF52B0 /* cVectorTests.c */; };
@@ -43,7 +42,6 @@
 /* Begin PBXFileReference section */
 		6742897D152AD9B00051F8CA /* libMVector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMVector.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		67428988152ADA140051F8CA /* MVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVector.h; sourceTree = "<group>"; };
-		67428989152ADA140051F8CA /* MVector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MVector.cpp; sourceTree = "<group>"; };
 		6762B715152D7CE0001B2274 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		6762B717152D99AA001B2274 /* MVector_version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVector_version.h; sourceTree = "<group>"; };
 		6762B719152D9EBC001B2274 /* configure */ = {isa = PBXFileReference; lastKnownFileType = text; path = configure; sourceTree = "<group>"; };
@@ -103,9 +101,8 @@
 				6762B719152D9EBC001B2274 /* configure */,
 				6762B71F152DBA8F001B2274 /* MVector-config.in */,
 				6762B71A152D9EE0001B2274 /* Makefile.in */,
-				67428988152ADA140051F8CA /* MVector.h */,
 				6762B717152D99AA001B2274 /* MVector_version.h */,
-				67428989152ADA140051F8CA /* MVector.cpp */,
+				67428988152ADA140051F8CA /* MVector.h */,
 				677DC77A152C3CB400BF52B0 /* MVector_cApi.cpp */,
 			);
 			name = Source;
@@ -210,7 +207,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6742898B152ADA140051F8CA /* MVector.cpp in Sources */,
 				677DC77B152C3CB400BF52B0 /* MVector_cApi.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

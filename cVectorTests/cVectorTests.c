@@ -3,7 +3,7 @@
 //  cVectorTests
 //
 //  Created by Muff Darren on 03/04/2012.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 [dstl]. All rights reserved.
 //
 
 #include <stdio.h>

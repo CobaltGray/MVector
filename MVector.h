@@ -11,31 +11,6 @@
  * 					(original code written in MATLAB by Ralph Fiedler)
  *
  *
- *		Functions in this class:
- * 			Vector minus()              : Vector negation.
- * 			real mag()                : Magnitude of vector.
- * 			Vector norm()               : Normalise vector.
- * 			real dot(vector)          : Dot product. 
- * 			Vector cross(Vector)        : Cross Product.
- * 			Vector rotatex(real angle): rotate around x axis by theta.
- * 			Vector rotatey(real angle): rotate around y axis by theta.
- * 			Vector rotatez(real angle): rotate around z axis by theta.
- *			Vector rotateAxis(Vector axis, real angle): rotate one vector
- *			around another by angle
- * 			string toString()           : Convert to string
- * 		Overloaded operators
- * 			+ : Vector addition. (Vector=Vector+Vector)
- * 			- : Vector subtract. (Vector=Vector-Vector)
- *          - : Scalar subtract. (Vector=Vector-scalar)
- *			- : Negate.			 (-Vector=Vector-)
- * 			* : scaler multiply. (Vector=Vector*scalar)
- *			* : scalar multiply. (Vector=scalar*Vector)
- * 			/ : scaler divide.	 (Vector=Vector/scalar)
- *			^ : cross product.   (Vector=Vector^Vector)
- *          << : write Vector to lhs stream
- *          != : Vector not equal test (bool Vector!=Vector)
- *          == : Vector eqal test (bool Vector==Vector)
- *
  * CLASSIFICATION        :  UNCLASSIFIED
  * Date of CLASSN        :  3rd April 2012
  *
@@ -69,6 +44,9 @@
 #include "MVector_version.h"
 #ifndef real
 #define real double
+#endif
+#ifndef EPSILON
+#define EPSILON 0.0000001
 #endif
 
 #ifndef MTLIB_H__
@@ -143,39 +121,97 @@ namespace MVector {
             struct { real R, theta, phi; };
         };
 		
-		// Constructors first
-		Vector();
-		Vector(real a, real b, real c);
-        Vector(VectorH);
-		
-		// Now overload scalar operators
-		Vector operator+(const Vector &v) const;
-		Vector operator+(real val) const;
-		Vector operator-(const Vector &v) const;
-		Vector operator-( real val) const;
-		Vector operator-() const;
-		Vector operator*(real val) const;
-		Vector operator/(real val) const;
-		bool operator!=(const Vector &v) const;
-		bool operator==(const Vector &v) const;
-		Vector operator^(const Vector &v) const;
-		
-		// friends
-		friend Vector operator*(const real val, const Vector &v);
-		friend std::ostream & operator <<(std::ostream &os, const Vector &v);
-		
-		// Now class functions
-		Vector minus() const;
-		real mag() const;
-		Vector norm() const;
-		real dot(const Vector &v) const;
-		Vector cross(const Vector &v) const;
-		Vector rotatex(real angle) const;
-		Vector rotatey(real angle) const;
-		Vector rotatez(real angle) const;
-        std::string toString();
-		Vector rotateAxis(Vector axis, real angle);
-        VectorH cstub();
+        Vector() : x( 0.0f), y(0.0f), z(0.0f) {};
+		Vector(real a, real b, real c) : x(a), y(b), z(c) {};
+        Vector(VectorH v) : x(v.x), y(v.y), z(v.z){};
+        void Set( real a, real b, real c ) { x = a; y = b; z = c; }
+        real Length() const { return (real)sqrt( x * x + y * y + z * z ); }
+        real mag() const {return Length(); };
+        void Normalise() { real l = 1.0f / Length(); x *= l; y *= l; z *= l; }
+        Vector norm() const { real l = 1.0f / Length(); return Vector (x*l, y*l, z*l); }
+        real SqrLength() { return x * x + y * y + z * z; }
+        real dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
+        real Dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
+        Vector cross(const Vector &v) const { return Vector(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x); }
+        Vector Cross(const Vector &v) const { return Vector(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x); }
+        void Negate() { x *= -1; y *= -1; z *= -1; }
+        Vector Minus() const {return Vector(-x, -y, -z); }
+        Vector minus() const {return Vector(-x, -y, -z); }
+        void operator += ( Vector& a_V ) { x += a_V.x; y += a_V.y; z += a_V.z; }
+        void operator += ( Vector* a_V ) { x += a_V->x; y += a_V->y; z += a_V->z; }
+        void operator -= ( Vector& a_V ) { x -= a_V.x; y -= a_V.y; z -= a_V.z; }
+        void operator -= ( Vector* a_V ) { x -= a_V->x; y -= a_V->y; z -= a_V->z; }
+        void operator *= ( real f ) { x *= f; y *= f; z *= f; }
+        void operator *= ( Vector& a_V ) { x *= a_V.x; y *= a_V.y; z *= a_V.z; }
+        void operator *= ( Vector* a_V ) { x *= a_V->x; y *= a_V->y; z *= a_V->z; }
+        Vector operator- () const { return Vector( -x, -y, -z ); }
+        friend Vector operator + ( const Vector& v1, const Vector& v2 ) { return Vector( v1.x + v2.x, v1.y + v2.y, v1.z + v2.z ); }
+        friend Vector operator + ( const Vector& v1, Vector* v2 ) { return Vector( v1.x + v2->x, v1.y + v2->y, v1.z + v2->z ); }
+        friend Vector operator + ( const Vector& v1, real f ) { return Vector(v1.x+f, v1.y+f, v1.z+f); }
+        friend Vector operator - ( const Vector& v1, const Vector& v2 ) { return Vector( v1.x - v2.x, v1.y - v2.y, v1.z - v2.z ); }
+        friend Vector operator - ( const Vector& v1, Vector* v2 ) { return Vector( v1.x - v2->x, v1.y - v2->y, v1.z - v2->z ); }
+        friend Vector operator - ( const Vector& v1, real f ) { return Vector(v1.x-f, v1.y-f, v1.z-f); }
+        friend Vector operator * ( const Vector& v, real f ) { return Vector( v.x * f, v.y * f, v.z * f ); }
+        friend Vector operator * ( const Vector& v1, Vector& v2 ) { return Vector( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
+        friend Vector operator * ( real f, const Vector& v ) { return Vector( v.x * f, v.y * f, v.z * f ); }
+        friend Vector operator / ( const Vector& v, real f ) { return Vector( v.x / f, v.y / f, v.z / f ); }
+        friend bool operator != ( const Vector& v1, const Vector& v2 ) { return (fabs(v1.x-v2.x)>EPSILON||fabs(v1.y-v2.y)>EPSILON||fabs(v1.z-v2.z)>EPSILON); }
+        friend bool operator == ( const Vector& v1, const Vector& v2 ) { return !(fabs(v1.x-v2.x)>EPSILON||fabs(v1.y-v2.y)>EPSILON||fabs(v1.z-v2.z)>EPSILON); }
+        friend Vector operator ^ ( const Vector& v1, const Vector&v2 ) { return Vector(v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x); }
+        friend std::ostream & operator << (std::ostream &os, const Vector &v) { os << "[" << v.x << "," << v.y << "," << v.z << "]"; return(os); }
+        Vector rotatex(real a) const { real c = cos(a); real s = sin(a); return Vector(x,y*c - z*s, s*y + c*z); }
+        Vector RotateX(real a) const { real c = cos(a); real s = sin(a); return Vector(x,y*c - z*s, s*y + c*z); }
+        Vector rotatey(real a) const { real c = cos(a); real s = sin(a); return Vector(c*x+s*z, y, c*z - x*s); }
+        Vector RotateY(real a) const { real c = cos(a); real s = sin(a); return Vector(c*x+s*z, y, c*z - x*s); }
+        Vector rotatez(real angle) const { real c = cos(angle); real s = sin(angle); return Vector(c*x-s*y, s*x+c*y, z); }
+        Vector RotateZ(real angle) const { real c = cos(angle); real s = sin(angle); return Vector(c*x-s*y, s*x+c*y, z); }
+        VectorH cstub(){VectorH ans; VECT_CREATE(x, y, z, ans); return(ans); }
+        
+        
+        /* Rotate this mvector about the vector axis by an amount theta */
+        /* the rotation Axis is assumed to be a direction from the origin */
+        /* ie this vector has already been translated */
+        Vector rotateAxis(Vector axis, real theta){
+            Vector ans;
+            if(axis.x == 0 && axis.y == 0 ){
+                ans = rotatez(theta);
+            }else if(axis.x == 0 && axis.z == 0){
+                ans = rotatey(theta);
+            }else if(axis.y == 0 && axis.z == 0){
+                ans = rotatex(theta);
+            }else{
+                real thetaz = atan(axis.y/axis.x);
+                real thetay = atan( sqrt( (axis.x * axis.x) + (axis.y * axis.y)) / axis.z );
+                
+                // First rotate around the z axis
+                ans = rotatez(-thetaz);
+                
+                // Now rotate around y axis
+                ans = ans.rotatey(-thetay);
+                
+                // now rotate around z by the required angle theta
+                ans = ans.rotatez(theta);
+                
+                // Now add on the rotation axis around y and z to get back to the original reference frame
+                ans = ans.rotatey(thetay);
+                ans = ans.rotatez(thetaz);
+            }
+            return(ans);
+        }
+        
+        std::string toString(){
+            std::string s;
+            {
+                std::ostringstream ss;
+                ss.precision(9);
+                ss << "[" << x << "," << y << "," << z << "]";
+                s = ss.str();
+            }
+            return(s);
+        }
+
+        //std::string toString();
+		//Vector rotateAxis(Vector axis, real angle);
 		
     };
 }

@@ -39,7 +39,7 @@
 
 #ifndef MVECTOR_VERSION_MAJOR
 #  define MVECTOR_VERSION_MAJOR    2
-#  define MVECTOR_VERSION_MINOR    1
+#  define MVECTOR_VERSION_MINOR    2
 #  define MVECTOR_VERSION_REV      0
 #  define MVECTOR_VERSION_BUILD    0
 #endif
@@ -49,8 +49,8 @@
 #endif
 
 #ifndef MVECTOR_RELEASE_DATE
-#  define MVECTOR_RELEASE_DATE     20120516
+#  define MVECTOR_RELEASE_DATE     201205117
 #endif
 #ifndef MVECTOR_RELEASE_NAME
-#  define MVECTOR_RELEASE_NAME     "2.1.0"
+#  define MVECTOR_RELEASE_NAME     "2.2.0"
 #endif

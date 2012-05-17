@@ -1,3 +1,14 @@
+#***************************************************************************
+#*
+#* Copyright Dstl 2012
+#*
+#* Module: Makefile.template
+#*
+#* Original Author: Matt Nottingham
+#*
+#* Description: Makefile for the image library library
+#*
+#***************************************************************************
 
 usage()
 {
