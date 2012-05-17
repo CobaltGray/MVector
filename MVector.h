@@ -61,11 +61,22 @@
 #define VECT_UNIT(a,out) {real vect_unit_tmp = VECT_MOD(a); out.x = a.x/vect_unit_tmp; out.y = a.y/vect_unit_tmp; out.z = a.z/vect_unit_tmp;}
 #define VECT_PROJ(vect, norm, out) {SPVector tmp; real dot = VECT_DOT(vect, norm); tmp.x = vect.x - dot*norm.x; tmp.y = vect.y - dot*norm.y; tmp.z = vect.z - dot*norm.z; VECT_UNIT(tmp, out);}  
 // Deprecated SPVector used in MTLib. Use VectorH as a the C stub.
-typedef struct {           
+
+typedef union {
+    struct { real x, y, z; };
+    struct { real r, g, b; };
+    struct { real cell[3]; };
+    struct { real R, theta, phi; };
+    struct { real lat, lon, alt; };
+
+}SPVector;
+
+/*typedef struct {           
     real x;
     real y;
     real z;
-} SPVector;
+} SPVector;*/
+
 #endif
 
 // Use VectorH as C stub for C++ vector functions
@@ -119,6 +130,7 @@ namespace MVector {
             struct { real r, g, b; };
             struct { real cell[3]; };
             struct { real R, theta, phi; };
+            struct { real lat, lon, alt; };
         };
 		
         Vector() : x( 0.0f), y(0.0f), z(0.0f) {};
