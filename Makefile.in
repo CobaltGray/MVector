@@ -12,7 +12,7 @@
 
 CC = g++
 
-SRC = MVector.cpp MVector_cApi.cpp
+SRC = MVector_cApi.cpp
 
 INCLUDE = MVector.h MVector_version.h
 
