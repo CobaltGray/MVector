@@ -47,7 +47,7 @@ using namespace MVector;
 
 extern "C" {
     
-    VectorH vectCreate(real a, real b, real c){
+    VectorH vectCreate(REAL a, REAL b, REAL c){
         MVector::Vector v(a,b,c);
         return(v.cstub());
     }
@@ -72,7 +72,7 @@ extern "C" {
         return ((A+B).cstub());
     }
     
-    VectorH vectAddScaler(VectorH a, real b){
+    VectorH vectAddScaler(VectorH a, REAL b){
         MVector::Vector A(a);
         return ((A+b).cstub());
     }
@@ -83,17 +83,17 @@ extern "C" {
         return ((A-B).cstub());
     }
     
-    VectorH vectSubScaler(VectorH a, real b){
+    VectorH vectSubScaler(VectorH a, REAL b){
         MVector::Vector A(a);
         return ((A-b).cstub());
     }
     
-    VectorH vectMult(VectorH v, real sc){
+    VectorH vectMult(VectorH v, REAL sc){
         MVector::Vector a(v);
         return ((a*sc).cstub());
     }
 
-    VectorH vectDiv(VectorH v, real sc){
+    VectorH vectDiv(VectorH v, REAL sc){
         MVector::Vector a(v);
         return((a/sc).cstub());
     }
@@ -103,7 +103,7 @@ extern "C" {
         return(a.minus().cstub());
     }
     
-    real vectMag(VectorH v){
+    REAL vectMag(VectorH v){
         MVector::Vector a(v);
         return (a.mag());
     } 
@@ -113,7 +113,7 @@ extern "C" {
         return(a.norm().cstub());
     }
     
-    real vectDot(VectorH a, VectorH b){
+    REAL vectDot(VectorH a, VectorH b){
         MVector::Vector va(a);
         MVector::Vector vb(b);
         return(va.dot(vb));
@@ -125,22 +125,22 @@ extern "C" {
         return ((va^vb).cstub());
     }
     
-    VectorH vectRotatex(VectorH v, real angle){
+    VectorH vectRotatex(VectorH v, REAL angle){
         MVector::Vector a(v);
         return(a.rotatex(angle).cstub());
     }
     
-    VectorH vectRotatey(VectorH v, real angle){
+    VectorH vectRotatey(VectorH v, REAL angle){
         MVector::Vector a(v);
         return(a.rotatey(angle).cstub());
     }
     
-    VectorH vectRotatez(VectorH v, real angle){
+    VectorH vectRotatez(VectorH v, REAL angle){
         MVector::Vector a(v);
         return(a.rotatez(angle).cstub());
     }
     
-    VectorH vectRotateAxis(VectorH v, VectorH axis, real angle){
+    VectorH vectRotateAxis(VectorH v, VectorH axis, REAL angle){
         MVector::Vector a(v);
         MVector::Vector ax(axis);
         return(a.rotateAxis(ax, angle).cstub());

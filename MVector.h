@@ -42,8 +42,8 @@
 #ifndef _MVECTOR_H_
 #define _MVECTOR_H_
 #include "MVector_version.h"
-#ifndef real
-#define real double
+#ifndef REAL
+#define REAL double
 #endif
 #ifndef EPSILON
 #define EPSILON 0.0000001
@@ -58,23 +58,23 @@
 #define VECT_MOD(a) (sqrt (a.x*a.x + a.y*a.y + a.z*a.z)) 
 #define VECT_DOT(a,b) (a.x*b.x + a.y*b.y + a.z*b.z)
 #define VECT_CROSS(a,b,out) {out.x = a.y*b.z - a.z*b.y; out.y = a.z*b.x - a.x*b.z; out.z = a.x*b.y - a.y*b.x}
-#define VECT_UNIT(a,out) {real vect_unit_tmp = VECT_MOD(a); out.x = a.x/vect_unit_tmp; out.y = a.y/vect_unit_tmp; out.z = a.z/vect_unit_tmp;}
-#define VECT_PROJ(vect, norm, out) {SPVector tmp; real dot = VECT_DOT(vect, norm); tmp.x = vect.x - dot*norm.x; tmp.y = vect.y - dot*norm.y; tmp.z = vect.z - dot*norm.z; VECT_UNIT(tmp, out);}  
+#define VECT_UNIT(a,out) {REAL vect_unit_tmp = VECT_MOD(a); out.x = a.x/vect_unit_tmp; out.y = a.y/vect_unit_tmp; out.z = a.z/vect_unit_tmp;}
+#define VECT_PROJ(vect, norm, out) {SPVector tmp; REAL dot = VECT_DOT(vect, norm); tmp.x = vect.x - dot*norm.x; tmp.y = vect.y - dot*norm.y; tmp.z = vect.z - dot*norm.z; VECT_UNIT(tmp, out);}  
 // Deprecated SPVector used in MTLib. Use VectorH as a the C stub.
 
 typedef union {
-    struct { real x, y, z; };
-    struct { real r, g, b; };
-    struct { real cell[3]; };
-    struct { real R, theta, phi; };
-    struct { real lat, lon, alt; };
+    struct { REAL x, y, z; };
+    struct { REAL r, g, b; };
+    struct { REAL cell[3]; };
+    struct { REAL R, theta, phi; };
+    struct { REAL lat, lon, alt; };
 
 }SPVector;
 
 /*typedef struct {           
-    real x;
-    real y;
-    real z;
+    REAL x;
+    REAL y;
+    REAL z;
 } SPVector;*/
 
 #endif
@@ -88,24 +88,24 @@ typedef SPVector VectorH;
 #ifdef __cplusplus
 extern "C" {
 #endif
-    VectorH vectCreate(real a, real b, real c);
+    VectorH vectCreate(REAL a, REAL b, REAL c);
     int vectEquals(VectorH v1, VectorH v2);
     int vectNotEqual(VectorH v1, VectorH v2);
     VectorH vectAdd(VectorH v1, VectorH v2);
-    VectorH vectAddScaler(VectorH v1, real scaler);
+    VectorH vectAddScaler(VectorH v1, REAL scaler);
     VectorH vectSub(VectorH v1, VectorH v2);
-    VectorH vectSubScaler(VectorH v1, real scaler);
-    VectorH vectMult(VectorH v1, real scaler);
-    VectorH vectDiv(VectorH v1, real scaler);
+    VectorH vectSubScaler(VectorH v1, REAL scaler);
+    VectorH vectMult(VectorH v1, REAL scaler);
+    VectorH vectDiv(VectorH v1, REAL scaler);
     VectorH vectMinus(VectorH v);
-    real vectMag(VectorH v);
+    REAL vectMag(VectorH v);
     VectorH vectNorm(VectorH v);
-    real vectDot(VectorH v1, VectorH v2);
+    REAL vectDot(VectorH v1, VectorH v2);
     VectorH vectCross(VectorH v1, VectorH v2);
-    VectorH vectRotatex(VectorH v, real angle);
-    VectorH vectRotatey(VectorH v, real angle);
-    VectorH vectRotatez(VectorH v, real angle);
-    VectorH vectRotateAxis(VectorH v, VectorH axis, real angle);
+    VectorH vectRotatex(VectorH v, REAL angle);
+    VectorH vectRotatey(VectorH v, REAL angle);
+    VectorH vectRotatez(VectorH v, REAL angle);
+    VectorH vectRotateAxis(VectorH v, VectorH axis, REAL angle);
 #ifdef __cplusplus
 }
 #endif
@@ -126,24 +126,24 @@ namespace MVector {
 		
         union
         {
-            struct { real x, y, z; };
-            struct { real r, g, b; };
-            struct { real cell[3]; };
-            struct { real R, theta, phi; };
-            struct { real lat, lon, alt; };
+            struct { REAL x, y, z; };
+            struct { REAL r, g, b; };
+            struct { REAL cell[3]; };
+            struct { REAL R, theta, phi; };
+            struct { REAL lat, lon, alt; };
         };
 		
         Vector() : x( 0.0f), y(0.0f), z(0.0f) {};
-		Vector(real a, real b, real c) : x(a), y(b), z(c) {};
+		Vector(REAL a, REAL b, REAL c) : x(a), y(b), z(c) {};
         Vector(VectorH v) : x(v.x), y(v.y), z(v.z){};
-        void Set( real a, real b, real c ) { x = a; y = b; z = c; }
-        real Length() const { return (real)sqrt( x * x + y * y + z * z ); }
-        real mag() const {return Length(); };
-        void Normalise() { real l = 1.0f / Length(); x *= l; y *= l; z *= l; }
-        Vector norm() const { real l = 1.0f / Length(); return Vector (x*l, y*l, z*l); }
-        real SqrLength() { return x * x + y * y + z * z; }
-        real dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
-        real Dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
+        void Set( REAL a, REAL b, REAL c ) { x = a; y = b; z = c; }
+        REAL Length() const { return (REAL)sqrt( x * x + y * y + z * z ); }
+        REAL mag() const {return Length(); };
+        void Normalise() { REAL l = 1.0f / Length(); x *= l; y *= l; z *= l; }
+        Vector norm() const { REAL l = 1.0f / Length(); return Vector (x*l, y*l, z*l); }
+        REAL SqrLength() { return x * x + y * y + z * z; }
+        REAL dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
+        REAL Dot(const Vector &v) const {return(v.x*x + v.y*y + v.z*z);}
         Vector cross(const Vector &v) const { return Vector(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x); }
         Vector Cross(const Vector &v) const { return Vector(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x); }
         void Negate() { x *= -1; y *= -1; z *= -1; }
@@ -153,37 +153,37 @@ namespace MVector {
         void operator += ( Vector* a_V ) { x += a_V->x; y += a_V->y; z += a_V->z; }
         void operator -= ( Vector& a_V ) { x -= a_V.x; y -= a_V.y; z -= a_V.z; }
         void operator -= ( Vector* a_V ) { x -= a_V->x; y -= a_V->y; z -= a_V->z; }
-        void operator *= ( real f ) { x *= f; y *= f; z *= f; }
+        void operator *= ( REAL f ) { x *= f; y *= f; z *= f; }
         void operator *= ( Vector& a_V ) { x *= a_V.x; y *= a_V.y; z *= a_V.z; }
         void operator *= ( Vector* a_V ) { x *= a_V->x; y *= a_V->y; z *= a_V->z; }
         Vector operator- () const { return Vector( -x, -y, -z ); }
         friend Vector operator + ( const Vector& v1, const Vector& v2 ) { return Vector( v1.x + v2.x, v1.y + v2.y, v1.z + v2.z ); }
         friend Vector operator + ( const Vector& v1, Vector* v2 ) { return Vector( v1.x + v2->x, v1.y + v2->y, v1.z + v2->z ); }
-        friend Vector operator + ( const Vector& v1, real f ) { return Vector(v1.x+f, v1.y+f, v1.z+f); }
+        friend Vector operator + ( const Vector& v1, REAL f ) { return Vector(v1.x+f, v1.y+f, v1.z+f); }
         friend Vector operator - ( const Vector& v1, const Vector& v2 ) { return Vector( v1.x - v2.x, v1.y - v2.y, v1.z - v2.z ); }
         friend Vector operator - ( const Vector& v1, Vector* v2 ) { return Vector( v1.x - v2->x, v1.y - v2->y, v1.z - v2->z ); }
-        friend Vector operator - ( const Vector& v1, real f ) { return Vector(v1.x-f, v1.y-f, v1.z-f); }
-        friend Vector operator * ( const Vector& v, real f ) { return Vector( v.x * f, v.y * f, v.z * f ); }
+        friend Vector operator - ( const Vector& v1, REAL f ) { return Vector(v1.x-f, v1.y-f, v1.z-f); }
+        friend Vector operator * ( const Vector& v, REAL f ) { return Vector( v.x * f, v.y * f, v.z * f ); }
         friend Vector operator * ( const Vector& v1, Vector& v2 ) { return Vector( v1.x * v2.x, v1.y * v2.y, v1.z * v2.z ); }
-        friend Vector operator * ( real f, const Vector& v ) { return Vector( v.x * f, v.y * f, v.z * f ); }
-        friend Vector operator / ( const Vector& v, real f ) { return Vector( v.x / f, v.y / f, v.z / f ); }
+        friend Vector operator * ( REAL f, const Vector& v ) { return Vector( v.x * f, v.y * f, v.z * f ); }
+        friend Vector operator / ( const Vector& v, REAL f ) { return Vector( v.x / f, v.y / f, v.z / f ); }
         friend bool operator != ( const Vector& v1, const Vector& v2 ) { return (fabs(v1.x-v2.x)>EPSILON||fabs(v1.y-v2.y)>EPSILON||fabs(v1.z-v2.z)>EPSILON); }
         friend bool operator == ( const Vector& v1, const Vector& v2 ) { return !(fabs(v1.x-v2.x)>EPSILON||fabs(v1.y-v2.y)>EPSILON||fabs(v1.z-v2.z)>EPSILON); }
         friend Vector operator ^ ( const Vector& v1, const Vector&v2 ) { return Vector(v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x); }
         friend std::ostream & operator << (std::ostream &os, const Vector &v) { os << "[" << v.x << "," << v.y << "," << v.z << "]"; return(os); }
-        Vector rotatex(real a) const { real c = cos(a); real s = sin(a); return Vector(x,y*c - z*s, s*y + c*z); }
-        Vector RotateX(real a) const { real c = cos(a); real s = sin(a); return Vector(x,y*c - z*s, s*y + c*z); }
-        Vector rotatey(real a) const { real c = cos(a); real s = sin(a); return Vector(c*x+s*z, y, c*z - x*s); }
-        Vector RotateY(real a) const { real c = cos(a); real s = sin(a); return Vector(c*x+s*z, y, c*z - x*s); }
-        Vector rotatez(real angle) const { real c = cos(angle); real s = sin(angle); return Vector(c*x-s*y, s*x+c*y, z); }
-        Vector RotateZ(real angle) const { real c = cos(angle); real s = sin(angle); return Vector(c*x-s*y, s*x+c*y, z); }
+        Vector rotatex(REAL a) const { REAL c = cos(a); REAL s = sin(a); return Vector(x,y*c - z*s, s*y + c*z); }
+        Vector RotateX(REAL a) const { REAL c = cos(a); REAL s = sin(a); return Vector(x,y*c - z*s, s*y + c*z); }
+        Vector rotatey(REAL a) const { REAL c = cos(a); REAL s = sin(a); return Vector(c*x+s*z, y, c*z - x*s); }
+        Vector RotateY(REAL a) const { REAL c = cos(a); REAL s = sin(a); return Vector(c*x+s*z, y, c*z - x*s); }
+        Vector rotatez(REAL angle) const { REAL c = cos(angle); REAL s = sin(angle); return Vector(c*x-s*y, s*x+c*y, z); }
+        Vector RotateZ(REAL angle) const { REAL c = cos(angle); REAL s = sin(angle); return Vector(c*x-s*y, s*x+c*y, z); }
         VectorH cstub(){VectorH ans; VECT_CREATE(x, y, z, ans); return(ans); }
         
         
         /* Rotate this mvector about the vector axis by an amount theta */
         /* the rotation Axis is assumed to be a direction from the origin */
         /* ie this vector has already been translated */
-        Vector rotateAxis(Vector axis, real theta){
+        Vector rotateAxis(Vector axis, REAL theta){
             Vector ans;
             if(axis.x == 0 && axis.y == 0 ){
                 ans = rotatez(theta);
@@ -192,8 +192,8 @@ namespace MVector {
             }else if(axis.y == 0 && axis.z == 0){
                 ans = rotatex(theta);
             }else{
-                real thetaz = atan(axis.y/axis.x);
-                real thetay = atan( sqrt( (axis.x * axis.x) + (axis.y * axis.y)) / axis.z );
+                REAL thetaz = atan(axis.y/axis.x);
+                REAL thetay = atan( sqrt( (axis.x * axis.x) + (axis.y * axis.y)) / axis.z );
                 
                 // First rotate around the z axis
                 ans = rotatez(-thetaz);
